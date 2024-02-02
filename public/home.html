@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TroyConnects</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .logo {
+      max-width: 100px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8">
+        <!-- Page title -->
+        <h1>TroyConnects</h1>
+      </div>
+      <div class="col-md-4 d-flex align-items-center justify-content-end">
+        <!-- Logo Image -->
+        <img src="TrojanConnects.png" alt="Logo" class="logo">
+      </div>
+    </div>
+    
+    <form>
+      <div class="form-group">
+        <label for="nameInput">Enter Name:</label>
+        <input type="text" class="form-control" id="nameInput" placeholder="Your Name">
+      </div>
+      
+      <div class="form-group">
+        <label for="majorInput">Major:</label>
+        <input type="text" class="form-control" id="majorInput" placeholder="Your Major">
+      </div>
+      
+      <div class="form-group">
+        <label for="ideaInput">Project Idea:</label>
+        <textarea class="form-control" id="ideaInput" rows="3" placeholder="Describe your project idea"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="ideaInput">Looking for:</label>
+        <textarea class="form-control" id="lookingForInput" rows="3" placeholder="Enter keywords"></textarea>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
+      
+      <div class="row">
+        <!-- Profile 1 -->
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="default-avatar-icon-of-social-media-user-vector.jpg" class="card-img-top" alt="Profile Image">
+            <div class="card-body">
+              <h5 class="card-title">Haadi</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Major: CSCI</h6>
+              <p class="card-text">Looking to build tools to assist USC students.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Profile 2 -->
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="default-avatar-icon-of-social-media-user-vector.jpg" class="card-img-top" alt="Profile Image">
+            <div class="card-body">
+              <h5 class="card-title">Priyansh</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Major: CSCI</h6>
+              <p class="card-text">Backend developer, Languages: Python, Java.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Profile 3 -->
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="default-avatar-icon-of-social-media-user-vector.jpg" class="card-img-top" alt="Profile Image">
+            <div class="card-body">
+              <h5 class="card-title">Cameron</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Major: CSBA</h6>
+              <p class="card-text">Full-stack developer, Languages: C++, MongoDB, SQL.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Profile 1 -->
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="default-avatar-icon-of-social-media-user-vector.jpg" class="card-img-top" alt="Profile Image">
+            <div class="card-body">
+              <h5 class="card-title">Bob</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Major: Business</h6>
+              <p class="card-text">Product Manager. Looking to build tools to assist USC students.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Profile 2 -->
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="default-avatar-icon-of-social-media-user-vector.jpg" class="card-img-top" alt="Profile Image">
+            <div class="card-body">
+              <h5 class="card-title">Sarah</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Major: Data Science</h6>
+              <p class="card-text">Data Analysis Languages: Python.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Profile 3 -->
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="default-avatar-icon-of-social-media-user-vector.jpg" class="card-img-top" alt="Profile Image">
+            <div class="card-body">
+              <h5 class="card-title">Josh</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Major: UI/UX</h6>
+              <p class="card-text">UI/UX. Frontend developer. Languages: HTML, CSS, React</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        const formData = {
+          name: document.getElementById('nameInput').value,
+          major: document.getElementById('majorInput').value,
+          projectIdea: document.getElementById('ideaInput').value,
+          lookingFor: document.getElementById('lookingForInput').value
+        };
+    
+        fetch('/submit-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            window.location.href = `/matches.html?keywords=${encodeURIComponent(formData.lookingFor)}`;
+          } else {
+            alert("Submission was not successful.");
+          }
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+      });
+    });
+    </script>
+    
+    
+  
+  <!-- Include Bootstrap JS and its dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matches</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .img {
+      max-width: 100px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <!-- Page title -->
+    <h1 class="text-center mb-4">Matches</h1>
+    
+    <!-- Profiles Section -->
+    <div id="profiles-section">
+      <!-- Profile 1 Placeholder -->
+      <div class="card mb-3" id="profile-1">
+        <div class="card-body">
+          <h5 class="card-title">Name Placeholder</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Major Placeholder</h6>
+          <p class="card-text">Description Placeholder</p>
+        </div>
+      </div>
+      
+      <!-- Profile 2 Placeholder -->
+      <div class="card mb-3" id="profile-2">
+        <div class="card-body">
+          <h5 class="card-title">Name Placeholder</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Major Placeholder</h6>
+          <p class="card-text">Description Placeholder</p>
+        </div>
+      </div>
+      
+      <!-- Profile 3 Placeholder -->
+      <div class="card mb-3" id="profile-3">
+        <div class="card-body">
+          <h5 class="card-title">Name Placeholder</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Major Placeholder</h6>
+          <p class="card-text">Description Placeholder</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Include Bootstrap JS and its dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+  function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  function createProfileCard(profile) {
+    const card = document.createElement('div');
+    card.className = 'card mb-3';
+    card.innerHTML = `
+      <img src="default-avatar-icon-of-social-media-user-vector.jpg" class="card-img-top" alt="Profile Image">
+      <div class="card-body">
+        <h5 class="card-title">${profile.name}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Major: ${profile.major}</h6>
+        <p class="card-text">${profile.projectIdea}</p>
+      </div>`;
+    return card;
+  }
+
+  function displayProfiles(profiles) {
+    const container = document.getElementById('profiles-section');
+    container.innerHTML = '';
+    profiles.forEach(profile => {
+      const card = createProfileCard(profile);
+      container.appendChild(card);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const keywords = getQueryParam('keywords');
+    if (!keywords) {
+      console.log("No keywords provided for matching.");
+      return;
+    }
+
+    fetch(`/match-profiles?keywords=${encodeURIComponent(keywords)}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch matches');
+        return response.json();
+      })
+      .then(profiles => {
+        displayProfiles(profiles);
+      })
+      .catch(error => {
+        console.error('Error fetching matches:', error);
+      });
+  });
+
+  </script>
+</body>
+</html>
